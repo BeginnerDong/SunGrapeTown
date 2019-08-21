@@ -1,0 +1,124 @@
+/**app.wxss**/
+/***********navbar***********/
+.navbar{
+	height:110rpx;
+	width:100%;
+	position:fixed;
+	bottom:0rpx;
+	z-index:999;
+	background:#fff;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	text-align:center;
+	box-shadow:0rpx 0rpx 15rpx #D5D5D5;
+}
+.nav_img image{
+	width:46rpx;
+	height:46rpx;
+}
+.navbar_item{
+	width: 25%;
+	text-align:center;
+}
+.navbar .text{
+	color:#999999;
+	font-size:24rpx;
+	margin-top: 8rpx;
+}
+.navbar .this-text{
+	color:#c6112b;
+}
+.nav_img{
+	width:48rpx;
+	height:48rpx;
+	margin:0 auto;
+}
+/***********navbar***********/
+
+/* 提交按钮 */
+.submitbtn button{width: 80%; height: 88rpx; line-break: 88rpx; text-align: center; color: #fff; background: #c6112b; border-radius: 50rpx; font-size: 32rpx; margin: 100rpx auto 60rpx auto;}
+
+/* 关闭按钮 */
+.colseBtn{ position: absolute; top: -80rpx; left: 50%;transform: translateX(-50%); width: 50rpx; height: 50rpx; border-radius: 50%; font-size: 46rpx; color: #999; border:2rpx solid #999; line-height: 50rpx; text-align: center; background: #fff;}
+
+.pr{
+  position: relative;
+}
+.flexRowBetween{
+	display:flex;
+	flex-direction:row;
+	justify-content:space-between;
+	align-items:center;
+}
+.avoidOverflow{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.avoidOverflow2{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2; 
+}
+.avoidOverflow3{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3; 
+}
+.flex1{
+	display:flex;
+}
+.flex{
+	display:flex;
+	align-items:center;
+}
+.flexCenter{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+.p40{
+	padding:0 5.6%;
+	width:88.8%;
+}
+.w100{
+	width:100%;
+}
+.font20{
+	font-size:20rpx;
+}
+.font22{
+	font-size:22rpx;
+}
+.font24{
+	font-size:24rpx;
+}
+.font26{
+	font-size:26rpx;
+}
+.font28{
+	font-size:28rpx;
+}
+.font30{
+	font-size:30rpx;
+}
+.font32{
+	font-size:32rpx;
+}
+.font34{
+	font-size:34rpx;
+}
+.colorb{
+	color:black;
+}
+.color1{
+	color:#fff;
+}
+

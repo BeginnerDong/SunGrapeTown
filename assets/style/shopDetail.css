@@ -1,0 +1,189 @@
+.detailTit {
+	padding: 20rpx 4%;
+	border-bottom: 20rpx solid #f5f5f5;
+}
+
+.detailTit .tit {
+	font-size: 30rpx;
+	line-height: 48rpx;
+	padding-bottom: 20rpx;
+}
+
+.detailTit .pric {
+	font-size: 34rpx;
+	color: #ff3b3b;
+}
+
+.detailTit .pric:before {
+	content: "￥";
+	font-size: 28rpx;
+	margin-right: 0rpx;
+}
+
+.xqInfor {
+	padding: 30rpx 4%;
+}
+
+.spxq {
+	font-size: 30rpx;
+	line-height: 48rpx;
+	position: relative;
+	padding-left: 20rpx;
+	margin-bottom: 10rpx;
+}
+
+.spxq:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 6rpx;
+	height: 40rpx;
+	background: #ff3b3b;
+	transform: translateY(-50%);
+}
+
+.xqInfor .cont view {
+	font-size: 26rpx;
+	line-height: 48rpx;
+	color: #666;
+	padding-bottom: 20rpx;
+}
+
+.xqInfor .cont image {
+	max-width: 100% !important;
+	min-width: 50%;
+	display: block;
+	margin: 20rpx auto;
+}
+
+.xqbotomBar {
+	width: 100%;
+	height: 100rpx;
+	background: #fff;
+	box-shadow: 0 -4rpx 10rpx rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.xqbotomBar .left {
+	width: 60%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.xqbotomBar .left .ite {
+	width: 33.3%;
+	text-align: center;
+	font-size: 24rpx;
+	color: #666;
+}
+
+.xqbotomBar .left .ite image {
+	width: 36rpx;
+	height: 36rpx;
+	display: block;
+	margin: 0 auto 10rpx auto;
+}
+
+.xqbotomBar .payBtn {
+	width: 40%;
+}
+
+.xqbotomBar .payBtn {
+	line-height: 100rpx;
+	text-align: center;
+	color: #fff;
+	background: #c6112b;
+	font-size: 30rpx;
+}
+
+.Rmore {
+	font-size: 24rpx;
+	color: #999;
+}
+
+.seltDatabox {
+	padding: 30rpx 0 10rpx 0;
+}
+
+.seltDatabox .mm {
+	width: 130rpx;
+	height: 56rpx;
+	text-align: center;
+	background: #f5f5f5;
+	color: #666;
+	line-height: 56rpx;
+	font-size: 26rpx;
+	border-radius: 8rpx;
+}
+
+.xdyyBtn {
+	width: 100%;
+	height: 100rpx;
+	background: #c6112b;
+	text-align: center;
+	color: #fff;
+	font-size: 32rpx;
+	line-height: 100rpx;
+}
+
+.showSel {
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 10000;
+}
+
+.mainbox {
+	padding: 20rpx 4%;
+	background: #fff;
+
+}
+.mainbox.fix{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	box-sizing: border-box;
+	width: 100%;
+	border-radius: 20rpx 20rpx 0 0;
+}
+.mainbox .twoCt {
+	width: 100%;
+}
+
+.mainbox .twoCt .cont {
+	width: 460rpx;
+}
+
+.yy-title {
+	font-size: 28rpx;
+}
+
+.yyDate-lis {}
+
+.yyDate-lis view {
+	width: 130rpx;
+	height: 56rpx;
+	font-size: 26rpx;
+	color: #666;
+	text-align: center;
+	line-height: 56rpx;
+	background: #f5f5f5;
+	margin: 0 20rpx 30rpx 20rpx;
+}
+
+.showSel .numBox view {
+	background: #f5f5f5;
+}

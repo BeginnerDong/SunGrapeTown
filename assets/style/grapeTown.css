@@ -1,0 +1,18 @@
+
+	/* 葡萄小镇列表 */
+	.town-lis{ width: 90%;margin: 0 auto;background: #fff;box-shadow: 0 0 10rpx rgba(0,0,0,0.1);padding: 15px 20rpx;box-sizing: border-box;border-radius: 10rpx; margin-top: 30rpx;}
+	.town-lis .title{font-size: 32rpx; color: #333; line-height: 44rpx;padding-bottom: 10rpx;}
+	.town-lis .under{ display: flex;justify-content: space-between; align-items: center;}
+	.town-lis .left{ width: 500rpx;font-size: 28rpx;color: #999;padding-right: 20rpx;box-sizing: border-box;}
+	.town-lis .infor{width: 100%;line-height:40rpx;}
+	.town-lis .data{ font-size: 28rpx; margin-top: 20rpx;}
+	.imgbox{ width: 240rpx;}
+	.imgbox image{ width: 240rpx; height:173rpx;  display: block;}
+	
+	/* 葡萄小镇详情 */
+	.pro-detail{ padding: 40rpx 3%;}
+	.pro-detail .title{ font-size: 32rpx; line-height: 44rpx; text-align: center;}
+	.pro-detail .time{ font-size: 28rpx; color: #999;text-align: right;padding-top: 20rpx;}
+	.xqText{font-size: 28rpx; line-height: 44rpx;color: #666;padding: 30rpx 0;}
+	.xqText view{padding-bottom: 20rpx;}
+	.xqText image{ width: 100%; display: block;margin: 20rpx auto;}

@@ -1,0 +1,18 @@
+
+	/* 商城列表 */
+	.content{ min-height: 100%; background: #f5f5f5!important;padding-bottom: 140rpx;}
+	.swiper-box{  height: 380rpx;margin: 20rpx 4%;box-sizing: border-box; border-radius: 10rpx;overflow: hidden;}
+	.swiper-box swiper-item{width: 100%;}
+	.swiper-box image{ width: 100%; height: 100%;}
+	
+	.topWhite{ background: #FFFFFF;}
+	.infor-title{color: #222; font-size:32rpx; line-height: 60rpx; position: relative;margin: 0 4%; font-weight: bold;padding-top: 10rpx;}
+	.infor-title .tt{ position: relative;z-index: 10;}
+	.titLine{width: 100rpx; height:8rpx ;background: #c6112b; position: absolute; left: 0; bottom: 14rpx; z-index:2;}
+	
+	.proLis{padding: 20rpx 4%;flex-wrap: wrap;}
+	.proLis .item-lis{ width: 330rpx; height: 370rpx; overflow: hidden;box-shadow: 0 0 10rpx rgba(0,0,0,0.1); border-radius: 10rpx;background: #fff;margin: 15rpx 0;}
+	.item-lis .img{width: 100%;height: 240rpx;display: block;margin: 0 auto;}
+	.item-lis .tit{ font-size: 30rpx; padding: 20rpx 4% 15rpx 4%; line-height: 32rpx;}
+	.item-lis .price{font-size: 32rpx;padding: 0 4%; color: #ff3b3b;}
+	.item-lis .price:before{content: "￥"; font-size: 26rpx;margin-right:4rpx;}
