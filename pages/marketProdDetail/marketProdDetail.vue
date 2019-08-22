@@ -38,13 +38,40 @@
 					<image src="../../static/images/details-icon2.png" mode=""></image>
 					<view>客服</view>
 				</view>
-				<view class="ite" >
+				<view class="ite" @click="showSel">
 					<image src="../../static/images/details-icon3.png" mode=""></image>
 					<view>购物车</view>
 				</view>
 			</view>
 			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/placeOrder/placeOrder'}})">立即支付</view>
 		</view>
+	
+		<view class="showSel" v-if="is_show" >
+			<view class="mainbox fix">
+				<view class="colseBtn" @click="showSel">×</view>
+				<view class="twoCt">
+					<view class="leftbox">
+						<image src="../../static/images/yuyue-img1.png"></image>
+					</view>
+					<view class="cont">
+						<view class="title avoidOverflow2">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</view>
+						<view class="price">59.00</view>
+					</view>
+				</view>
+				<view class="flexRowBetween" style="padding: 20rpx 0; border-top: 2rpx solid #e7e7e7; border-bottom: 2rpx solid #e7e7e7; margin-top: 20rpx;">
+					<view class="yy-title">购买数量</view>
+					<view class="numBox" style="position: relative; right: auto; bottom: auto;">
+						<view>+</view>
+						<view class="num">{{proNum}}</view>
+						<view>-</view>
+					</view>
+				</view>
+				<view class="submitbtn">
+					<button type="submit" @click="webSelf.$Router.navigateTo({route:{path:'/pages/car/car'}})" >确定</button>
+				</view>
+			</view>
+		</view>
+	
 	</view>
 
 </template>
@@ -54,7 +81,8 @@
 		data() {
 			return {
 				webSelf: this,
-				showView: false,
+				is_show: false,
+				proNum:0,
 				score: '',
 				wx_info: {},
 				imgUrls: [
@@ -79,8 +107,12 @@
 		},
 
 		methods: {
-			change() {
+			showSel(){
 				const self = this;
+				self.is_show = !self.is_show;
+				self.seltData({
+					is_show:self.is_show
+				})
 			},
 
 			getMainData() {
@@ -94,6 +126,7 @@
 <style>
 	@import "../../assets/style/common.css";
 	@import "../../assets/style/index.css";
+	@import "../../assets/style/car.css";
 	@import "../../assets/style/shopDetail.css";
 
 	.swiper-box {
