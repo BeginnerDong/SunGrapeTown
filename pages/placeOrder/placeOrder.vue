@@ -15,9 +15,9 @@
 				<view class="flexRowBetween" style="padding-top: 20rpx; border-top: 2rpx solid #e7e7e7; margin-top: 30rpx;">
 					<view class="yy-title">购买数量</view>
 					<view class="numBox" style="position: relative; right: auto; bottom: auto;">
-						<view>+</view>
+						<view @click="reduce">-</view>
 						<view class="num">{{proNum}}</view>
-						<view>-</view>
+						<view @click="plus">+</view>
 					</view>
 				</view>
 			</view>
@@ -68,8 +68,17 @@
 		},
 
 		methods: {
-			change() {
+			plus(proNum) {
 				const self = this;
+			    self.proNum++;
+			},
+			reduce(proNum){
+				const self = this;
+				if (self.proNum <= 1) {
+					alert("不能少了")
+				}else {
+					self.proNum -= 1;
+				}
 			},
 
 			getMainData() {

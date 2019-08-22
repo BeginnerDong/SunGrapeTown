@@ -1,39 +1,23 @@
 <template>
 	<view>
-		<view class="caiLis flexRowBetween">
+		<view class="caiLis flexRowBetween" v-for="(item,index) in carProLis" :key="index">
 			<view class="itemL">
-				<view><image src="../../static/images/shopping-icon2.png" mode=""></image></view>
+				<view>
+					<image src="../../static/images/shopping-icon1.png" v-show="selIcon"  @click="changeIcon"></image>
+					<image src="../../static/images/shopping-icon2.png" v-show="!selIcon"  @click="changeIcon"></image>
+				</view>
 			</view>
 			<view class="twoCt">
 				<view class="leftbox">
-					<image src="../../static/images/shopping-img1.png"></image>
+					<image :src="item.imgUrl"></image>
 				</view>
 				<view class="cont">
-					<view class="title avoidOverflow2">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</view>
-					<view class="price">59.00</view>
+					<view class="title avoidOverflow2">{{item.title}}</view>
+					<view class="price">{{item.price}}</view>
 					<view class="numBox">
-						<view @click="plus">+</view>
-						<view class="num">{{proNum}}</view>
 						<view @click="reduce">-</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="caiLis flexRowBetween">
-			<view class="itemL">
-				<view><image src="../../static/images/shopping-icon1.png" mode=""></image></view>
-			</view>
-			<view class="twoCt">
-				<view class="leftbox">
-					<image src="../../static/images/shopping-img1.png"></image>
-				</view>
-				<view class="cont">
-					<view class="title avoidOverflow2">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</view>
-					<view class="price">59.00</view>
-					<view class="numBox">
-						<view>+</view>
 						<view class="num">{{proNum}}</view>
-						<view>-</view>
+						<view @click="plus">+</view>
 					</view>
 				</view>
 			</view>
@@ -41,8 +25,8 @@
 		
 		<view class="allPrice flexRowBetween">
 			<view class="ll">
-				<image src="../../static/images/shopping-icon2.png" ></image>
-				<image src="../../static/images/shopping-icon1.png" ></image>
+				<image @click="allsetBtn" v-show="allsetIcon" src="../../static/images/shopping-icon2.png" ></image>
+				<image @click="allsetBtn" v-show="!allsetIcon" src="../../static/images/shopping-icon1.png" ></image>
 				全选
 			</view>
 			<view class="rr">
@@ -88,9 +72,25 @@
 			return {
 				webSelf: this,
 				is_show:false,
+				selIcon:false,
+				allsetIcon:false,
 				score: '',
-				proNum:0,
-				wx_info: {}
+				proNum:1,
+				wx_info: {},
+				num:1,
+				carProLis:[
+					{
+						imgUrl:"../../static/images/shopping-img1.png",
+						title:"标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
+						price:59.00
+					},
+					{
+						imgUrl:"../../static/images/yuyue-img1.png",
+						title:"2222标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
+						price:59.00
+					}
+				]
+				
 			}
 		},
 
@@ -104,17 +104,29 @@
 		},
 
 		methods: {
-			change() {
+			changeIcon:function(){
 				const self = this;
+				self.selIcon = !self.selIcon
 			},
-
+			allsetBtn(){
+				const self = this;
+				self.allsetIcon = !self.allsetIcon
+			},
+			plus(proNum) {
+				const self = this;
+                self.proNum++;
+            },
+			reduce(proNum){
+				const self = this;
+				if (self.proNum <= 1) {
+					alert("不能少了")
+				}else {
+					self.proNum -= 1;
+				}
+			},
 			getMainData() {
 				const self = this;
 				self.$apis.userGet(postData, callback);
-			},
-			plus(){
-				const self = this;
-				self.proNum = proNum++
 			}
 		}
 	}
