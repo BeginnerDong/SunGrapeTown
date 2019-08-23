@@ -40,7 +40,7 @@
 					<view>购物车</view>
 				</view>
 			</view>
-			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/placeOrder/placeOrder'}})">立即支付</view>
+			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})">立即支付</view>
 		</view>
 	
 		<!-- <view class="showSel" v-if="is_show" >

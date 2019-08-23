@@ -63,6 +63,15 @@
 			}
 		},
 		{
+			"path": "pages/confirmOrder/confirmOrder",
+			"style": {
+				"navigationBarTitleText": "确认订单", //设置页面标题文字
+				"onReachBottomDistance": 100,
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
 			"path": "pages/ticketingProdlistDetail/ticketingProdlistDetail",
 			"style": {
 				"navigationBarTitleText": "商品详情", //设置页面标题文字
