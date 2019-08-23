@@ -2,7 +2,13 @@
 	<view class="" >
 
 		<view>
-			<view class="mainbox" style=" border-bottom: 20rpx solid #f5f5f5;">
+			<view class="flexRowBetween cfmSetAdrs" @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddress/myAddress'}})">
+				<view class="yy-title">收货地址</view>
+				<view class="avoidOverflow" style="width:70%; font-size: 28rpx;padding-left:20rpx;color: #666;">陕西省西安市雁塔区高新大都荟</view>
+				<image style="width: 15rpx;height: 30rpx;position: absolute;right: 6rpx;top:30rpx;" src="../../static/images/arrow.png" alt=""/>
+			</view>
+			
+			<view class="mainbox">
 				<view class="twoCt">
 					<view class="leftbox">
 						<image src="../../static/images/yuyue-img1.png"></image>
@@ -10,21 +16,14 @@
 					<view class="cont">
 						<view class="title avoidOverflow2">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</view>
 						<view class="price">59.00</view>
+						<view class="numBox" style="position: absolute; right: 0; bottom: 0;">
+							<view @click="reduce">-</view>
+							<view class="num">{{proNum}}</view>
+							<view @click="plus">+</view>
+						</view>
 					</view>
 				</view>
-				<view class="flexRowBetween" style="padding-top: 20rpx; border-top: 2rpx solid #e7e7e7; margin-top: 30rpx; justify-content: flex-start;position:relative;"  @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddress/myAddress'}})">
-					<view class="yy-title">收货地址</view>
-					<view class="avoidOverflow" style="width:70%; font-size: 28rpx;padding-left:20rpx;color: #666;">陕西省西安市雁塔区高新大都荟</view>
-					<image style="width: 15rpx;height: 30rpx;position: absolute;right: 6rpx;top:30rpx;" src="../../static/images/arrow.png" alt=""/>
-				</view>
-				<view class="flexRowBetween" style="padding-top: 20rpx; border-top: 2rpx solid #e7e7e7; margin-top: 30rpx;">
-					<view class="yy-title">购买数量1</view>
-					<view class="numBox" style="position: relative; right: auto; bottom: auto;">
-						<view @click="reduce">-</view>
-						<view class="num">{{proNum}}</view>
-						<view @click="plus">+</view>
-					</view>
-				</view>
+				
 			</view>
 		</view>
 		<view class="editLis">
@@ -95,6 +94,9 @@
 	@import "../../assets/style/car.css";
 	@import "../../assets/style/shopDetail.css";
 	
+	.mainbox{padding: 40rpx 4%;border-bottom: 2rpx solid #e7e7e7;}
+	.mainbox:last-child{border-bottom: none;}
+	.cfmSetAdrs{padding:40rpx 4%; justify-content: flex-start;position:relative; border-bottom: 20rpx solid #f5f5f5;}
 	.editLis{margin: 30rpx 4%;box-shadow: 0 0 10rpx rgba(0,0,0,0.1); border-radius: 10rpx;}
 	.editLis .item{height: 100rpx;padding: 0 4%; }
 	.editLis .item:first-child{ border-bottom: 2rpx solid #e7e7e7;}
