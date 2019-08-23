@@ -158,8 +158,6 @@
 
 			pay(e) {
 				const self = this;
-				self.$Utils.buttonCanClick(self);
-
 				const orderList = [{
 						product: [],
 						type: 1
@@ -170,16 +168,16 @@
 					if (self.mainData[i].isSelect) {
 						orderList[0].product.push({
 							id: self.mainData[i].id,
-							count: self.mainData[i].count
+							count: self.mainData[i].count,
+							product:self.mainData[i]
 						}, );
 					};
 				};
 				if (orderList[0].product.length == 0) {
-					self.$Utils.buttonCanClick(self, true);
 					self.$Utils.showToast('未选择商品', 'none', 1000);
 					return;
 				};
-				wx.setStorageSync('payPro', orderList);
+				uni.setStorageSync('payPro', orderList);
 				self.$Utils.pathTo('/pages/oderTrue/oderTrue', 'nav')
 
 			},
