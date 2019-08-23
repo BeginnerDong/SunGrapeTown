@@ -1,65 +1,65 @@
 <template>
 	<view>
-		<view class="caiLis flexRowBetween" v-for="(item,index) in carProLis" :key="index">
+		<view class="caiLis flexRowBetween" v-for="(item,index) in mainData" :key="index">
 			<view class="itemL">
 				<view>
-					<image src="../../static/images/shopping-icon1.png" v-show="selIcon"  @click="changeIcon"></image>
-					<image src="../../static/images/shopping-icon2.png" v-show="!selIcon"  @click="changeIcon"></image>
+					<image src="../../static/images/shopping-icon1.png" v-if="item.isSelect" @click="choose(index)"></image>
+					<image src="../../static/images/shopping-icon2.png" v-if="!item.isSelect" @click="choose(index)"></image>
 				</view>
 			</view>
 			<view class="twoCt">
 				<view class="leftbox">
-					<image :src="item.imgUrl"></image>
+					<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 				</view>
 				<view class="cont">
 					<view class="title avoidOverflow2">{{item.title}}</view>
 					<view class="price">{{item.price}}</view>
 					<view class="numBox">
-						<view @click="reduce">-</view>
-						<view class="num">{{proNum}}</view>
-						<view @click="plus">+</view>
+						<view @click="counter(index,'-')">-</view>
+						<view class="num">{{item.count}}</view>
+						<view@click="counter(index,'+')">+</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="allPrice flexRowBetween">
 			<view class="ll">
-				<image @click="allsetBtn" v-show="allsetIcon" src="../../static/images/shopping-icon2.png" ></image>
-				<image @click="allsetBtn" v-show="!allsetIcon" src="../../static/images/shopping-icon1.png" ></image>
+				<image @click="allsetBtn" v-show="isChooseAll" src="../../static/images/shopping-icon1.png"></image>
+				<image @click="allsetBtn" v-show="!isChooseAll" src="../../static/images/shopping-icon2.png"></image>
 				全选
 			</view>
 			<view class="rr">
-				合计：<view class="mny">0.00</view>
+				合计：<view class="mny">{{totalPrice}}</view>
 				<span class="jsBtn">结算</span>
 			</view>
-		</view>	
+		</view>
 		<!--底部tab键-->
 		<view class="navbar">
-			<view class="navbar_item"  @click="webSelf.$Router.redirectTo({route:{path:'/pages/index/index'}})">
+			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/index/index'}})">
 				<view class="nav_img">
-					<image src="../../static/images/nabar.png"/>
+					<image src="../../static/images/nabar.png" />
 				</view>
 				<view class="text">首页</view>
 			</view>
 			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/marketProdlist/marketProdlist'}})">
 				<view class="nav_img">
-					<image src="../../static/images/nabar2.png"/>
+					<image src="../../static/images/nabar2.png" />
 				</view>
 				<view class="text">商品</view>
 			</view>
 			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/car/car'}})">
 				<view class="nav_img">
-					<image src="../../static/images/nabar3-a.png"/>
+					<image src="../../static/images/nabar3-a.png" />
 				</view>
 				<view class="text this-text">购物车</view>
-			</view>	
-			<view class="navbar_item"  @click="webSelf.$Router.redirectTo({route:{path:'/pages/myCenter/myCenter'}})">
+			</view>
+			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/myCenter/myCenter'}})">
 				<view class="nav_img">
-					<image src="../../static/images/nabar4.png"/>
+					<image src="../../static/images/nabar4.png" />
 				</view>
 				<view class="text">我的</view>
-			</view>	
+			</view>
 		</view>
 		<!--底部tab键-->
 	</view>
@@ -71,26 +71,10 @@
 		data() {
 			return {
 				webSelf: this,
-				is_show:false,
-				selIcon:false,
-				allsetIcon:false,
-				score: '',
-				proNum:1,
-				wx_info: {},
-				num:1,
-				carProLis:[
-					{
-						imgUrl:"../../static/images/shopping-img1.png",
-						title:"标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
-						price:59.00
-					},
-					{
-						imgUrl:"../../static/images/yuyue-img1.png",
-						title:"2222标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
-						price:59.00
-					}
-				]
 				
+				
+				mainData:[]
+
 			}
 		},
 
@@ -100,34 +84,125 @@
 
 		onShow() {
 			const self = this;
+			self.mainData = self.$Utils.getStorageArray('cartData');
 			document.title = '购物车'
+			console.log('self.mainData',self.mainData)
+			self.checkChooseAll();
+			self.countTotalPrice();
 		},
 
 		methods: {
-			changeIcon:function(){
+
+
+			checkChooseAll() {
 				const self = this;
-				self.selIcon = !self.selIcon
+				var isChooseAll = true;
+				for (var i = 0; i < self.mainData.length; i++) {
+					if (!self.mainData[i].isSelect) {
+						isChooseAll = false;
+					};
+				};
+				self.isChooseAll = isChooseAll;
 			},
-			allsetBtn(){
+
+			chooseAll() {
 				const self = this;
-				self.allsetIcon = !self.allsetIcon
+				self.isChooseAll = !self.isChooseAll;
+				for (var i = 0; i < self.mainData.length; i++) {
+					self.mainData[i].isSelect = self.isChooseAll;
+					self.$Utils.setStorageArray('cartData', self.mainData[i], 'id', 999);
+				};
+				self.countTotalPrice();
 			},
-			plus(proNum) {
+
+		/* 	delete() {
 				const self = this;
-                self.proNum++;
-            },
-			reduce(proNum){
+				for (var i = 0; i < self.mainData.length; i++) {
+					if (self.mainData[i].isSelect) {
+						self.$Utils.delStorageArray('cartData', self.mainData[i], 'id');
+					}
+				};
+				self.mainData = self.$Utils.getStorageArray('cartData');
+				self.checkChooseAll();
+				self.setData({
+					web_mainData: self.mainData
+				});
+			}, */
+
+			choose(index) {
 				const self = this;
-				if (self.proNum <= 1) {
-					alert("不能少了")
-				}else {
-					self.proNum -= 1;
-				}
+				
+				if (self.mainData[index].isSelect) {
+					self.mainData[index].isSelect = false;
+				} else {
+					self.mainData[index].isSelect = true;
+				};
+				self.$Utils.setStorageArray('cartData', self.mainData[index], 'id', 999);
+				
+				self.checkChooseAll();
+				self.countTotalPrice();
 			},
-			getMainData() {
+
+			countTotalPrice() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				self.totalPrice = 0;
+				
+				for (var i = 0; i < self.mainData.length; i++) {
+					if (self.mainData[i].isSelect) {
+						self.totalPrice += self.mainData[i].price * self.mainData[i].count;
+					};
+				};
+			},
+
+
+
+			pay(e) {
+				const self = this;
+				self.$Utils.buttonCanClick(self);
+
+				const orderList = [{
+						product: [],
+						type: 1
+					}
+
+				];
+				for (var i = 0; i < self.mainData.length; i++) {
+					if (self.mainData[i].isSelect) {
+						orderList[0].product.push({
+							id: self.mainData[i].id,
+							count: self.mainData[i].count
+						}, );
+					};
+				};
+				if (orderList[0].product.length == 0) {
+					self.$Utils.buttonCanClick(self, true);
+					self.$Utils.showToast('未选择商品', 'none', 1000);
+					return;
+				};
+				wx.setStorageSync('payPro', orderList);
+				self.$Utils.pathTo('/pages/oderTrue/oderTrue', 'nav')
+
+			},
+
+
+			counter(index,type) {
+				const self = this;
+				
+				if (type == '+') {
+					self.mainData[index].count++;
+				} else {
+					if (self.mainData[index].count > 1) {
+						self.mainData[index].count--;
+					}
+				};
+				self.$Utils.setStorageArray('cartData', self.mainData[index], 'id', 999);
+				
+				self.countTotalPrice();
+			},
+
+
+		
+		
 		}
 	}
 </script>
@@ -135,9 +210,9 @@
 <style>
 	@import "../../assets/style/common.css";
 	@import "../../assets/style/car.css";
-	page{padding-bottom: 160rpx; background: #f5f5f5;}
-	
-	
-	
 
+	page {
+		padding-bottom: 160rpx;
+		background: #f5f5f5;
+	}
 </style>

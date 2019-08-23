@@ -2,10 +2,10 @@ const CONFIG = {
 	
         //开发环境配置http://106.12.155.217/project/
         development: {
-                loginTitleTxt: "仲裁帮", // 登录页标题
-                copyrightTxt: "仲裁帮v1.0", // 版本信息
-                assetsPath: "http://loan.52team.top/", // 静态资源路径
-                baseUrl: "http://loan.52team.top/api/public/index.php/api/v1/",
+                loginTitleTxt: "葡萄小镇", // 登录页标题
+                copyrightTxt: "葡萄小镇v1.0", // 版本信息
+                assetsPath: "http://106.12.155.217/putao/", // 静态资源路径
+                baseUrl: "http://106.12.155.217/putao/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。
@@ -14,10 +14,10 @@ const CONFIG = {
 
         //生产环境配置
         production: {
-                loginTitleTxt: "仲裁帮", // 登录页标题
-                copyrightTxt: "仲裁帮v1.0", // 版本信息
-                assetsPath: "http://loan.52team.top/wx/", // 静态资源路径
-                baseUrl: "http://loan.52team.top/api/public/index.php/api/v1/",
+                loginTitleTxt: "葡萄小镇", // 登录页标题
+                copyrightTxt: "葡萄小镇v1.0", // 版本信息
+                assetsPath: "http://106.12.155.217/putao/wx/", // 静态资源路径
+                baseUrl: "http://106.12.155.217/putao/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。

@@ -3,25 +3,22 @@
 		<view>
 			<swiper class="swiper-box" indicator-dots="indicatorDots" autoplay="autoplay" interval="interval" duration="duration"
 			 indicator-active-color="#db0160">
-				<block v-for="(item,index) in imgUrls" :key="index">
+				<block v-for="(item,index) in mainData.bannerImg" :key="index">
 					<swiper-item class="swiper-item">
-						<image :src="item" class="slide-image" />
+						<image :src="item.url" class="slide-image" />
 					</swiper-item>
 				</block>
 			</swiper>
 		</view>
 		<view class="detailTit">
-			<view class="tit">标题标题标题标题标题标题标题标题</view>
-			<view class="pric">56.00</view>
+			<view class="tit">{{mainData.title}}</view>
+			<view class="pric">{{mainData.price}}</view>
 		</view>
 		
 		<view class="xqInfor">
 			<view class="spxq">商品详情</view>
 			<view class="cont">
-				<view>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
-				<view>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
-				<view>
-					<image src="../../static/images/details-img2.png" mode="widthFix" />
+				<view class="content ql-editor" v-html="mainData.content">
 				</view>
 			</view>
 
@@ -30,7 +27,7 @@
 		<!-- 底部菜单按钮 -->
 		<view class="xqbotomBar">
 			<view class="left">
-				<view class="ite" @click="webSelf.$Router.navigateTo({route:{path:'/pages/index/index'}})">
+				<view class="ite" @click="webSelf.$Router.redirectTo({route:{path:'/pages/index/index'}})">
 					<image src="../../static/images/details-icon1.png" mode=""></image>
 					<view>返回首页</view>
 				</view>
@@ -38,7 +35,7 @@
 					<image src="../../static/images/details-icon2.png" mode=""></image>
 					<view>客服</view>
 				</view>
-				<view class="ite" @click="showSel">
+				<view class="ite" @click="addCart()">
 					<image src="../../static/images/details-icon3.png" mode=""></image>
 					<view>购物车</view>
 				</view>
@@ -46,7 +43,7 @@
 			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/placeOrder/placeOrder'}})">立即支付</view>
 		</view>
 	
-		<view class="showSel" v-if="is_show" >
+		<!-- <view class="showSel" v-if="is_show" >
 			<view class="mainbox fix">
 				<view class="colseBtn" @click="showSel">×</view>
 				<view class="twoCt">
@@ -70,7 +67,7 @@
 					<button type="submit" @click="webSelf.$Router.navigateTo({route:{path:'/pages/car/car'}})" >确定</button>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	
 	</view>
 
@@ -81,15 +78,7 @@
 		data() {
 			return {
 				webSelf: this,
-				is_show: false,
-				proNum:0,
-				score: '',
-				wx_info: {},
-				imgUrls: [
-					'../../static/images/home-banner.png',
-					'../../static/images/home-banner.png',
-					'../../static/images/home-banner.png'
-				],
+				mainData:{},
 				indicatorDots: false,
 				autoplay: false,
 				interval: 5000,
@@ -98,7 +87,12 @@
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			var options = self.$Utils.getHashParameters();
+			if(options[0].id){
+				self.id = options[0].id
+			}
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
@@ -107,12 +101,49 @@
 		},
 
 		methods: {
-			showSel(){
+			
+			addCart() {
+				const self = this;
+			
+				if (JSON.stringify(self.mainData) == '{}') {
+					
+					self.$Utils.showToast('未选中商品', 'none');
+					return;
+				};
+				self.mainData.count = 1;
+				self.mainData.isSelect = true;
+				var res = self.$Utils.setStorageArray('cartData', self.mainData, 'id', 999);
+				if (res) {
+					self.$Utils.showToast('加入成功', 'none');
+				};
+			},
+			
+			getMainData() {
+				const self = this;
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+						id: self.id
+					},
+				};
+				postData.order = {
+					listorder:'desc'
+				}
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+			
+				};
+				self.$apis.productGet(postData, callback);
+			},
+			/* showSel(){
 				const self = this;
 				self.is_show = !self.is_show;
-				self.seltData({
-					is_show:self.is_show
-				})
+				
 			},
 			plus(proNum) {
 				const self = this;
@@ -125,12 +156,9 @@
 				}else {
 					self.proNum -= 1;
 				}
-			},
+			}, */
 
-			getMainData() {
-				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+			
 		}
 	}
 </script>

@@ -4,9 +4,9 @@
 		<view class="topWhite">
 			<view>
 				<swiper class="swiper-box" indicator-dots="indicatorDots" autoplay="autoplay" interval="interval" duration="duration" indicator-active-color="#db0160">
-					<block v-for="(item,index) in imgUrls" :key="index">
+					<block v-for="(item,index) in labelData" :key="index">
 						<swiper-item  class="swiper-item" >
-							<image :src="item" class="slide-image"/>
+							<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="slide-image"/>
 						</swiper-item>
 					</block> 
 				</swiper>
@@ -18,8 +18,9 @@
 		</view>
 		
 		<view class="proLis flexRowBetween">
-			<view class="item-lis" v-for="(item,index) in produtList" :key="index"  @click="webSelf.$Router.navigateTo({route:{path:'/pages/marketProdDetail/marketProdDetail'}})">
-				<image class="img" :src="item.picUl" alt=""/>
+			<view class="item-lis" v-for="(item,index) in mainData" :key="index"  
+			@click="webSelf.$Router.navigateTo({route:{path:'/pages/marketProdDetail/marketProdDetail?id='+item.id}})">
+				<image class="img" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" alt=""/>
 				<view class="tit avoidOverflow">{{item.title}}</view>
 				<view class="price">{{item.price}}</view>
 			</view>
@@ -63,41 +64,9 @@
 		data() {
 			return {
 				webSelf: this,
-				showView: false,
-				score:'',
-				wx_info:{},
-				produtList:[
-					{
-						picUl:"../../static/images/hone-img.png",
-						title:"产品标题1",
-						price:"56.00"
-					},
-					{
-						picUl:"../../static/images/hone-img.png",
-						title:"产品标题2",
-						price:"66.00"
-					},
-					{
-						picUl:"../../static/images/hone-img.png",
-						title:"产品标题1",
-						price:"56.00"
-					},
-					{
-						picUl:"../../static/images/hone-img.png",
-						title:"产品标题2",
-						price:"66.00"
-					},
-					{
-						picUl:"../../static/images/hone-img.png",
-						title:"产品标题2",
-						price:"66.00"
-					}
-				],
-				imgUrls: [
-					  '../../static/images/home-banner.png',
-					  '../../static/images/home-banner.png',
-					  '../../static/images/home-banner.png'
-				],
+			
+				mainData:[],
+				labelData:[],
 				indicatorDots: false,
 				autoplay: false,
 				interval: 5000,
@@ -106,7 +75,9 @@
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			self.$Utils.loadAll(['getMainData','getLabelData'], self);
 		},
 
 		onShow() {
@@ -118,11 +89,60 @@
 			change(){
 				const self = this;
 			},
+			
+			getLabelData() {
+				const self = this;
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+					},
+				};
+				postData.getBefore = {
+					parent: {
+						tableName: 'Label',
+						searchItem: {
+							title: ['=', ['首页轮播']],
+						},
+						middleKey: 'parentid',
+						key: 'id',
+						condition: 'in',
+					},
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.labelData.push.apply(self.labelData, res.info.data)
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getLabelData');
+			
+				};
+				self.$apis.labelGet(postData, callback);
+			},
 
 			getMainData() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+						type: 1
+					},
+					paginate:self.$Utils.cloneForm(self.paginate)
+				};
+				postData.order = {
+					listorder:'desc'
+				}
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data)
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+			
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	}
  </script>
