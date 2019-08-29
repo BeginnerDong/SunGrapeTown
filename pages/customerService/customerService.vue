@@ -1,9 +1,9 @@
 <template>
 	<view>
-		<view class="fefuCont">
+		<view class="fefuCont" @click="callPhone()">
 			<img class="phone" src="../../static/images/contact us-icon1.png" alt="">
 			<view>客服电话</view>
-			<view>029-89569965</view>
+			<view>{{mainData.description}}</view>
 		</view>
 
 	</view>
@@ -17,28 +17,49 @@
 				webSelf: this,
 				showView: false,
 				score: '',
-				wx_info: {}
+				mainData: {}
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			self.$Utils.loadAll(['getMainData'], self);		
 		},
-
+		
 		onShow() {
 			const self = this;
 			document.title = '客服'
 		},
-
+		
 		methods: {
-			change() {
+			
+			callPhone(){
 				const self = this;
+				uni.makePhoneCall({
+				    phoneNumber: self.mainData.description
+				});
 			},
-
+			
+			
 			getMainData() {
-				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				const self = this;	
+				const postData = {
+					thirdapp:2,
+					searchItem:{
+						
+						title:'客服电话'
+					}					
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
 		}
 	}
 </script>

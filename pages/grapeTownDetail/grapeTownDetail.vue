@@ -1,12 +1,9 @@
 <template>
 	<view class="pro-detail">
-		<view class="title">标题标题标题标题标题标题标题标题标题标题</view>
-		<view class="time">2019-8-20</view>
+		<view class="title">{{mainData.title}}</view>
+		<view class="time">{{mainData.create_time}}</view>
 		<view class="xqText">
-			<view>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
-			<view>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
-			<view>
-				<image src="../../static/images/zhen1.png" mode="widthFix"></image>
+			<view class="content ql-editor" v-html="mainData.content">
 			</view>
 		</view>
 	</view>
@@ -16,18 +13,18 @@
 	export default {
 		data() {
 			return {
-				Self: this,
-				submitData: {
-					code: ''
-				},
-				sendCode: false,
-				codeTimer: 0,
-				subType: '',
+				self: this,
+				mainData:{}
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			var options = self.$Utils.getHashParameters();	
+			if(options[0].id){
+				self.id = options[0].id
+			}
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
@@ -38,26 +35,23 @@
 
 		methods: {
 
-			change() {
-				const self = this;
-			},
+			
 
-			getProductData() {
+			getMainData() {
 				const self = this;
 				const postData = {
-					thirdapp_id: 2
+					thirdapp_id: 2,
+					id:self.id
 				};
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
-						self.productData = res.info.data[0]
-
+						self.mainData = res.info.data[0]
 					}
 					console.log('res', res)
-
-					self.getCouponData()
+					self.$Utils.finishFunc('getMainData');
 				};
-				self.$apis.productGet(postData, callback);
+				self.$apis.articleGet(postData, callback);
 			}
 		}
 	}

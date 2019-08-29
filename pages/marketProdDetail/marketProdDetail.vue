@@ -40,7 +40,7 @@
 					<view>购物车</view>
 				</view>
 			</view>
-			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})">立即支付</view>
+			<view class="payBtn" @click="goBuy">立即支付</view>
 		</view>
 	
 		<!-- <view class="showSel" v-if="is_show" >
@@ -107,7 +107,7 @@
 			
 				if (JSON.stringify(self.mainData) == '{}') {
 					
-					self.$Utils.showToast('未选中商品', 'none');
+					self.$Utils.showToast('商品错误', 'none');
 					return;
 				};
 				self.mainData.count = 1;
@@ -116,6 +116,24 @@
 				if (res) {
 					self.$Utils.showToast('加入成功', 'none');
 				};
+			},
+			
+			goBuy() {
+				const self = this;
+				if (JSON.stringify(self.mainData) == '{}') {	
+					api.showToast('商品错误', 'none', 1000);
+					return;
+				};
+				var orderList = [{
+					product: [{
+						id: self.mainData.id,
+						count: 1,
+						product:self.mainData
+					}],
+					type: 1,
+				}];
+				uni.setStorageSync('payPro', orderList);
+				self.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})
 			},
 			
 			getMainData() {
@@ -140,23 +158,7 @@
 				};
 				self.$apis.productGet(postData, callback);
 			},
-			/* showSel(){
-				const self = this;
-				self.is_show = !self.is_show;
-				
-			},
-			plus(proNum) {
-				const self = this;
-			    self.proNum++;
-			},
-			reduce(proNum){
-				const self = this;
-				if (self.proNum <= 1) {
-					alert("不能少了")
-				}else {
-					self.proNum -= 1;
-				}
-			}, */
+			
 
 			
 		}

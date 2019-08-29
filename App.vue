@@ -1,14 +1,14 @@
 <script>
 	import token from "./common/token.js"
 	export default {
-		onLaunch: function() {	
+		/* onLaunch: function() {	
 			var hasToken = token.verify();
 			if(!hasToken){
 			 	uni.reLaunch({
 			 		url: '/pages/index/index'
 			 	});
 			};
-		},
+		}, */
 		onShow: function() {
 			console.log('App Show')
 		},

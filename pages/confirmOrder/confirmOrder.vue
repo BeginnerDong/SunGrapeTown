@@ -4,22 +4,22 @@
 		<view>
 			<view class="flexRowBetween cfmSetAdrs" @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddress/myAddress'}})">
 				<view class="yy-title">收货地址</view>
-				<view class="avoidOverflow" style="width:70%; font-size: 28rpx;padding-left:20rpx;color: #666;">陕西省西安市雁塔区高新大都荟</view>
-				<image style="width: 15rpx;height: 30rpx;position: absolute;right: 6rpx;top:30rpx;" src="../../static/images/arrow.png" alt=""/>
+				<view class="avoidOverflow" style="width:76%; font-size: 28rpx;padding-left:20rpx;color: #666;">{{addressData.city+addressData.detail}}</view>
+				<image style="width: 15rpx;height: 30rpx;" src="../../static/images/arrow.png" alt=""/>
 			</view>
 			
-			<view class="mainbox">
+			<view class="mainbox" v-for="(item,index) in mainData[0].product">
 				<view class="twoCt">
 					<view class="leftbox">
-						<image src="../../static/images/yuyue-img1.png"></image>
+						<image :src="item.product&&item.product.mainImg&&item.product.mainImg[0]?item.product.mainImg[0].url:''"></image>
 					</view>
 					<view class="cont">
-						<view class="title avoidOverflow2">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</view>
-						<view class="price">59.00</view>
+						<view class="title avoidOverflow2">{{item.product?item.product.title:''}}</view>
+						<view class="price">{{item.product?item.product.price:''}}</view>
 						<view class="numBox" style="position: absolute; right: 0; bottom: 0;">
-							<view @click="reduce">-</view>
-							<view class="num">{{proNum}}</view>
-							<view @click="plus">+</view>
+							<view @click="counter(index,'-')">-</view>
+							<view class="num">{{item.count}}</view>
+							<view @click="counter(index,'+')">+</view>
 						</view>
 					</view>
 				</view>
@@ -29,8 +29,8 @@
 		<view class="editLis">
 			
 			<view class="underFix">
-				合计： <view class="price">56.00</view>
-				<view class="btn">立即预约</view>
+				合计： <view class="price">{{totalPrice}}</view>
+				<view class="btn" @click="webSelf.$Utils.stopMultiClick(submit)">立即购买</view>
 			</view>
 			
 		</view>
@@ -43,47 +43,161 @@
 		data() {
 			return {
 				webSelf: this,
-				is_show: false,
-				score: '',
-				proNum:1,
-				wx_info: {}
+				addressData:{},
+				mainData:[]
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			uni.setStorageSync('canClick',true);
+			self.mainData = self.$Utils.jsonToArray(uni.getStorageSync('payPro'), 'unshift');
+			console.log('self.data.mainData', self.mainData);
+			self.countTotalPrice();
 		},
 
 		onShow() {
 			const self = this;
+			if(uni.getStorageSync('choosedAddressData')){
+				self.addressData = uni.getStorageSync('choosedAddressData')
+			}else{
+				self.getAddressData()
+			}
 			document.title = '下单预约'
 		},
 
 		methods: {
-			plus(proNum) {
+			
+			submit(){
 				const self = this;
-			    self.proNum++;
-			},
-			reduce(proNum){
-				const self = this;
-				if (self.proNum <= 1) {
-					alert("不能少了")
-				}else {
-					self.proNum -= 1;
+				uni.setStorageSync('canClick',false);
+				if(JSON.stringify(self.addressData) == '{}'){
+					uni.setStorageSync('canClick',true);
+					self.$Utils.showToast('请选择收货地址','none')
+				}else{
+					self.addOrder()
 				}
 			},
-
-			getMainData() {
-				const self = this;
-				self.$apis.userGet(postData, callback);
+			
+			addOrder() {
+				const self = this;					
+				const postData = {
+					tokenFuncName: 'getProjectToken',
+					orderList: self.mainData,
+				};	
+				const callback = (res) => {
+					if (res && res.solely_code == 100000) {
+						self.orderId = res.info.id;
+						self.pay(self.orderId)
+					} else {		
+						uni.setStorageSync('canClick', true);
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						});
+					};
+				};
+				self.$apis.addOrder(postData, callback);
 			},
-			showSel(){
+			
+			pay(order_id) {
 				const self = this;
-				self.is_show = !self.is_show;
-				self.seltData({
-					is_show:self.is_show
-				})
-			}
+				
+				const postData = {};	
+				postData.wxPay = {
+					price: self.totalPrice
+				};
+				postData.tokenFuncName = 'getProjectToken',
+				postData.searchItem = {
+					id: self.orderId
+				};
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						if (res.info) {
+							const payCallback = (payData) => {
+								console.log('payData', payData)
+								if (payData == 1) {
+									uni.showToast({
+										title: '支付成功',
+										duration: 1000,
+										success: function() {
+											
+										}
+									});
+									setTimeout(function() {
+										self.$Router.redirectTo({route:{path:'/pages/myOderList/myOderList'}})
+									}, 1000);
+								} else {
+									uni.setStorageSync('canClick', true);
+									uni.showToast({
+										title: '支付失败',
+										duration: 2000
+									});
+								};
+							};
+							self.$Utils.realPay(res.info, payCallback);
+						} else {
+							
+							uni.showToast({
+								title: '支付成功',
+								duration: 1000,
+								success: function() {
+									
+								}
+							});
+							setTimeout(function() {
+								self.$Router.redirectTo({route:{path:'/pages/myOderList/myOderList'}})
+							}, 1000);
+						};
+					} else {
+						uni.setStorageSync('canClick', true);
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						});
+					};
+				};
+				self.$apis.pay(postData, callback);
+			},
+			
+			getAddressData() {
+				const self = this;		
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					isdefault:1
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.addressData = res.info.data[0]
+					} else {
+						self.$Utils.showToast('没有更多了','none');
+					};
+				};
+				self.$apis.addressGet(postData, callback);
+			},
+			
+			counter(index,type) {
+				const self = this;			
+				if (type == '+') {
+					self.mainData[0].product[index].count++;
+				} else {
+					if (self.mainData[0].product[index].count > 1) {
+						self.mainData[0].product[index].count--;
+					}
+				};			
+				self.countTotalPrice();
+			},
+			
+			countTotalPrice() {
+				const self = this;
+				self.totalPrice = 0;				
+				for (var i = 0; i < self.mainData[0].product.length; i++) {
+					self.totalPrice += self.mainData[0].product[i].product.price * self.mainData[0].product[i].count;		
+				};
+			},
+			
+			
 		}
 	}
 </script>

@@ -65,13 +65,13 @@
         "permission" : {}
     },
     "h5" : {
-        "title" : "仲裁帮",
+        "title" : "葡萄小镇",
         "devServer" : {
             "https" : false
         },
         "router" : {
             "base" : "/wx/"
         },
-        "domain" : "http://loan.52team.top"
+        "domain" : "http://we-chat.taihaozhuangyuan.com"
     }
 }

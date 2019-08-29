@@ -1,35 +1,25 @@
 <template>
 	<view>
-			<view class="myaddress-lis">
-				<view class="name">张三<view class="numb">15632564562</view></view>
-				<view class="adrs">陕西省西安市高新区大都荟</view>
+			<view class="myaddress-lis" v-for="(item,index) in mainData">
+				<view class="name"  @click="choose(index)">{{item.name}}<view class="numb">{{item.phone}}</view></view>
+				<view class="adrs"  @click="choose(index)">{{item.city+item.detail}}</view>
 				<view class="seltBox">
-					<view class="L">
-						<image class="icon" src="../../static/images/shopping-icon1.png" alt=""></image>
+					<view class="L" :data-id="item.id" @click="updateAddress($event.currentTarget.dataset.id)">
+						<image class="icon" :src="item.isdefault==1?'../../static/images/shopping-icon1.png':'../../static/images/shopping-icon2.png'" alt=""></image>
 						默认地址
 					</view>
 					<view class="R">
-						<view class="child"><image src="../../static/images/address-ico4.png" mode=""></image>编辑</view>
-						<view class="child"><image src="../../static/images/address-ico3.png" mode=""></image>删除</view>
+						<view class="child" :data-id="item.id" @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddressAdd/myAddressAdd?id='+$event.currentTarget.dataset.id}})">
+							<image src="../../static/images/address-ico4.png" mode=""></image>
+							编辑</view>
+						<view class="child" :data-id="item.id" @click="deleteAddress($event.currentTarget.dataset.id)">
+							<image src="../../static/images/address-ico3.png" mode=""></image>
+							删除</view>
 					</view>
 					
 				</view>
 			</view>
-			<view class="myaddress-lis">
-				<view class="name">张三<view class="numb">15632564562</view></view>
-				<view class="adrs">陕西省西安市高新区大都荟</view>
-				<view class="seltBox">
-					<view class="L">
-						<image class="icon" src="../../static/images/shopping-icon2.png" alt=""></image>
-						默认地址
-					</view>
-					<view class="R">
-						<view class="child"><image src="../../static/images/address-ico4.png" mode=""></image>编辑</view>
-						<view class="child"><image src="../../static/images/address-ico3.png" mode=""></image>删除</view>
-					</view>
-					
-				</view>
-			</view>
+			
 			
 			<view class="submitbtn">
 				<button type="button"  @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddressAdd/myAddressAdd'}})">添加</button>
@@ -38,34 +28,111 @@
 </template>
 
 <script>
+
 	export default {
+
 		data() {
 			return {
+				mainData:[],
 				webSelf: this,
-				showView: false,
-				score: '',
-				wx_info: {}
+				choosedIndex:-1
 			}
 		},
-
+		
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			
+			var res = self.$Token.getProjectToken(function(){
+				self.$Utils.loadAll(['getMainData'], self)
+			});
+			if(res){
+				self.$Utils.loadAll(['getMainData'], self)
+			};
 		},
-
+		
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = '收货地址'
 		},
-
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
-			change() {
+			
+			choose(index){
 				const self = this;
+				self.choosedIndex = index;
+				uni.setStorageSync('choosedAddressData',self.mainData[index]);
+				console.log('choosedIndex',self.choosedIndex);		
 			},
-
+			
 			getMainData() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+
+				const postData = {};
+				postData.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data);
+					} else {
+						self.$Utils.showToast('没有更多了','none');
+					};
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.addressGet(postData, callback);
+			},
+
+
+
+
+
+			deleteAddress(id) {
+				const self = this;
+				const postData = {};
+				postData.searchItem = {};
+				postData.searchItem.id = id;
+				postData.tokenFuncName = 'getProjectToken';
+				const callback = (res) => {
+					if (res) {
+						self.mainData = [];
+						self.getMainData();
+					}
+				};
+				self.$apis.addressDelete(postData, callback)
+			},
+
+
+			updateAddress(id) {
+				const self = this;
+				const postData = {};
+
+				postData.tokenFuncName = 'getProjectToken';
+
+				postData.searchItem = {};
+				postData.searchItem.id = id;
+				postData.data = {
+					isdefault: 1
+				}
+				const callback = (res) => {
+					if (res) {
+						self.mainData = [];
+						self.getMainData();
+					}
+				};
+				self.$apis.addressUpdate(postData, callback);
+			},
+
+
+
+
 		}
 	}
 </script>

@@ -1,10 +1,11 @@
 <template>
 	<view>
 		<view>
-			<view class="meallLis" v-for="(item,index) in meallLis" :key="index" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlistDetail/ticketingProdlistDetail'}})">
+			<view class="meallLis" v-for="(item,index) in mainData" :key="index" 
+			@click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlistDetail/ticketingProdlistDetail?id='+item.id}})">
 				<view class="twoCt">
 					<view class="leftbox">
-						<image :src="item.imgUrl"></image>
+						<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 					</view>
 					<view class="cont">
 						<view class="title avoidOverflow2">{{item.title}}</view>
@@ -16,19 +17,19 @@
 		
 		<!--底部tab键-->
 		<view class="navbar">
-			<view class="navbar_item" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketing/ticketing'}})">
+			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/ticketing/ticketing'}})">
 				<view class="nav_img">
 					<image src="../../static/images/1nabar1.png" />
 				</view>
 				<view class="text">门票预订</view>
 			</view>
-			<view class="navbar_item" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingMeals/ticketingMeals'}})">
+			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/ticketingMeals/ticketingMeals'}})">
 				<view class="nav_img">
 					<image src="../../static/images/1nabar2-a.png" />
 				</view>
 				<view class="text  this-text">餐食预订</view>
 			</view>
-			<view class="navbar_item" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingCenter/ticketingCenter'}})">
+			<view class="navbar_item" @click="webSelf.$Router.redirectTo({route:{path:'/pages/ticketingCenter/ticketingCenter'}})">
 				<view class="nav_img">
 					<image src="../../static/images/1nabar3.png" />
 				</view>
@@ -45,35 +46,33 @@
 		data() {
 			return {
 				webSelf: this,
-				score: '',
-				wx_info: {},
-				meallLis:[
-					{
-						imgUrl:"../../static/images/yuyue-img1.png",
-						title:"标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
-						price:"56.00"
-					},
-					{
-						imgUrl:"../../static/images/yuyue-img1.png",
-						title:"2222标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
-						price:"88.00"
-					},
-					{
-						imgUrl:"../../static/images/yuyue-img1.png",
-						title:"3222标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题",
-						price:"108.00"
-					}
-				]
+				
+			
+				mainData:[]
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			/* var options = self.$Utils.getHashParameters(); */
+			
+			self.title = '餐饮预订';
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
 			const self = this;
 			document.title = '餐食预约'
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
 		},
 
 		methods: {
@@ -83,8 +82,24 @@
 
 			getMainData() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+						type: 3
+					},
+					paginate: self.$Utils.cloneForm(self.paginate)
+				};
+			
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data)
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData')		
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	}
 </script>

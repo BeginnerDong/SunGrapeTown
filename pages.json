@@ -18,6 +18,16 @@
 			}
 		},
 		{
+			"path": "pages/ticketing/ticketing",
+			"style": {
+				"navigationBarTitleText": "门票预订", //设置页面标题文字
+				"onReachBottomDistance": 100,
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		
+		{
 			"path": "pages/ticketingMyBook/ticketingMyBook",
 			"style": {
 				"navigationBarTitleText": "我的预订", //设置页面标题文字
@@ -57,15 +67,6 @@
 			"path": "pages/placeOrder/placeOrder",
 			"style": {
 				"navigationBarTitleText": "下单预约", //设置页面标题文字
-				"onReachBottomDistance": 100,
-				"navigationBarBackgroundColor":"#F6F6F6",
-				"navigationBarTextStyle":"black"
-			}
-		},
-		{
-			"path": "pages/confirmOrder/confirmOrder",
-			"style": {
-				"navigationBarTitleText": "确认订单", //设置页面标题文字
 				"onReachBottomDistance": 100,
 				"navigationBarBackgroundColor":"#F6F6F6",
 				"navigationBarTextStyle":"black"
@@ -176,6 +177,15 @@
 			"path": "pages/grapeTownDetail/grapeTownDetail",
 			"style": {
 				"navigationBarTitleText": "文章详情", //设置页面标题文字
+				"onReachBottomDistance": 100,
+				"navigationBarBackgroundColor":"#F6F6F6",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/confirmOrder/confirmOrder",
+			"style": {
+				"navigationBarTitleText": "确认订单", //设置页面标题文字
 				"onReachBottomDistance": 100,
 				"navigationBarBackgroundColor":"#F6F6F6",
 				"navigationBarTextStyle":"black"

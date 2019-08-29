@@ -2,8 +2,8 @@
 	<view>
 		<view class="top">
 			<view class="cont">
-				<img class="userPic" src="../../static/images/about-img.png" alt="">
-				<view class="name">用户名称</view>
+				<img class="userPic" :src="mainData.headImgUrl" alt="">
+				<view class="name">{{mainData.nickname}}</view>
 			</view>
 		</view>
 		
@@ -82,14 +82,13 @@
 		data() {
 			return {
 				webSelf: this,
-				showView: false,
-				score: '',
-				wx_info: {}
+				mainData:{}
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			self.$Utils.loadAll(['getMainData'], self);		
 		},
 
 		onShow() {
@@ -98,14 +97,23 @@
 		},
 
 		methods: {
-			change() {
-				const self = this;
-			},
-
+			
+			
 			getMainData() {
-				const self = this;
+				const self = this;	
+				const postData = {
+					tokenFuncName:'getProjectToken'
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
 				self.$apis.userGet(postData, callback);
-			}
+			},
 		}
 	}
 </script>

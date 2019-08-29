@@ -77,7 +77,7 @@
 		onLoad(options) {
 			const self = this;
 			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
-			self.$Utils.loadAll(['getMainData','getLabelData','tokenGet'], self);
+			self.$Utils.loadAll(['getMainData','getLabelData'], self);
 		},
 
 		onShow() {

@@ -1,8 +1,9 @@
 <template>
 	<view>
 		<view class="proLis flexRowBetween">
-			<view class="item-lis" v-for="(item,index) in produtList" :key="index" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlistDetail/ticketingProdlistDetail'}})">
-				<image class="img" :src="item.picUl" alt="" />
+			<view class="item-lis" v-for="(item,index) in mainData" :key="index" 
+			@click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlistDetail/ticketingProdlistDetail?id='+item.id}})">
+				<image class="img" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" alt="" />
 				<view class="tit avoidOverflow2">{{item.title}}</view>
 				<view class="price">{{item.price}}</view>
 			</view>
@@ -18,45 +19,36 @@
 		data() {
 			return {
 				webSelf: this,
-				showView: false,
-				score: '',
-				wx_info: {},
-				produtList: [{
-						picUl: "../../static/images/img01.png",
-						title: "产品标题产品标题产品标题产品标题产品标题1",
-						price: "56.00"
-					},
-					{
-						picUl: "../../static/images/img01.png",
-						title: "2产品标题产品标题产品标题产品标题产品标题2",
-						price: "66.00"
-					},
-					{
-						picUl: "../../static/images/img01.png",
-						title: "3产品标题产品标题产品标题产品标题产品标题",
-						price: "56.00"
-					},
-					{
-						picUl: "../../static/images/img01.png",
-						title: "4产品标题产品标题产品标题产品标题产品标题",
-						price: "66.00"
-					},
-					{
-						picUl: "../../static/images/img01.png",
-						title: "5产品标题产品标题产品标题产品标题产品标题",
-						price: "66.00"
-					}
-				]
+				mainData:[]
 			}
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			/* var options = self.$Utils.getHashParameters(); */
+			
+			if(options.title){
+				self.title = options.title
+			}else{
+				self.$Utils.showToast('数据错误','none');
+				return
+			};
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
 			const self = this;
 			document.title = '小镇市集'
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
 		},
 
 		methods: {
@@ -66,8 +58,35 @@
 
 			getMainData() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+						type: 2
+					},
+					paginate: self.$Utils.cloneForm(self.paginate)
+				};
+				postData.getBefore = {
+					label: {
+						tableName: 'Label',
+						searchItem: {
+							title: ['=', [self.title]],
+						},
+						middleKey: 'category_id',
+						key: 'id',
+						condition: 'in',
+					},
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data)
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+			
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		}
 	}
 </script>

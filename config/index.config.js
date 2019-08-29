@@ -1,11 +1,11 @@
 const CONFIG = {
 	
-        //开发环境配置http://106.12.155.217/project/
+        //开发环境配置http://we-chat.taihaozhuangyuan.com/project/
         development: {
                 loginTitleTxt: "葡萄小镇", // 登录页标题
                 copyrightTxt: "葡萄小镇v1.0", // 版本信息
-                assetsPath: "http://106.12.155.217/putao/", // 静态资源路径
-                baseUrl: "http://106.12.155.217/putao/public/index.php/api/v1/",
+                assetsPath: "http://we-chat.taihaozhuangyuan.com", // 静态资源路径
+                baseUrl: "http://we-chat.taihaozhuangyuan.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。
@@ -16,8 +16,8 @@ const CONFIG = {
         production: {
                 loginTitleTxt: "葡萄小镇", // 登录页标题
                 copyrightTxt: "葡萄小镇v1.0", // 版本信息
-                assetsPath: "http://106.12.155.217/putao/wx/", // 静态资源路径
-                baseUrl: "http://106.12.155.217/putao/public/index.php/api/v1/",
+                assetsPath: "http://we-chat.taihaozhuangyuan.com/wx/", // 静态资源路径
+                baseUrl: "http://we-chat.taihaozhuangyuan.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
                 testOpenId: "oEjRxwy7jL9PgG0kWeb4VcDTZEas", // 小程序测试openId
                 forcedLogin: false, // touristMode游客模式下APP是否强制用户登录 场景：当用户进入登录页面后无法后退。

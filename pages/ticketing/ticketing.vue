@@ -4,36 +4,36 @@
 			<view style="border-bottom: 20rpx solid #f5f5f5;">
 				<swiper class="swiper-box" indicator-dots="indicatorDots" autoplay="autoplay" interval="interval" duration="duration"
 				 indicator-active-color="#db0160">
-					<block v-for="(item,index) in imgUrls" :key="index">
-						<swiper-item class="swiper-item">
-							<image :src="item" class="slide-image" />
+					<block v-for="(item,index) in mainData" :key="index">
+						<swiper-item  class="swiper-item" >
+							<image :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''" class="slide-image"/>
 						</swiper-item>
-					</block>
+					</block> 
 				</swiper>
 			</view>
 		</view>
 		<view class="homeIcon flexRowBetween" style="flex-wrap: wrap;">
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=亲子双人票'}})">
 				<image src="../../static/images/1home-icon1.png" alt=""/>
 				<view>亲子双人票</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=亲子三人票'}})">
 				<image src="../../static/images/1home-icon2.png" alt=""/>
 				<view>亲子三人票</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=林地露营'}})">
 				<image src="../../static/images/1home-icon3.png" alt=""/>
 				<view>林地露营</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=真人CS'}})">
 				<image src="../../static/images/1home-icon4.png" alt=""/>
 				<view>真人CS</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=丛林穿越'}})">
 				<image src="../../static/images/1home-icon5.png" alt=""/>
 				<view>丛林穿越</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=葡萄酒DIY'}})">
 				<image src="../../static/images/1home-icon6.png" alt=""/>
 				<view>葡萄酒DIY</view>
 			</view>
@@ -73,14 +73,8 @@
 		data() {
 			return {
 				webSelf: this,
-				is_show: false,
-				score: '',
-				wx_info: {},
-				imgUrls: [
-					'../../static/images/1home-banner.png',
-					'../../static/images/1home-banner.png',
-					'../../static/images/1home-banner.png'
-				],
+				
+				mainData:[],
 				indicatorDots: false,
 				autoplay: false,
 				interval: 5000,
@@ -89,7 +83,9 @@
 		},
 
 		onLoad(options) {
-			uni.setStorageSync('canClick', true);
+			const self = this;
+		
+			self.$Utils.loadAll(['getMainData'], self);
 		},
 
 		onShow() {
@@ -98,14 +94,37 @@
 		},
 
 		methods: {
-			change() {
-				const self = this;
-			},
+		
 
 			getMainData() {
 				const self = this;
-				self.$apis.userGet(postData, callback);
-			}
+				const postData = {
+					searchItem: {
+						thirdapp_id: 2,
+					},
+				};
+				postData.getBefore = {
+					parent: {
+						tableName: 'Label',
+						searchItem: {
+							title: ['=', ['门票预订轮播']],
+						},
+						middleKey: 'parentid',
+						key: 'id',
+						condition: 'in',
+					},
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data)
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+			
+				};
+				self.$apis.labelGet(postData, callback);
+			},
 		}
 	}
 </script>

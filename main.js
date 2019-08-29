@@ -28,7 +28,7 @@ $Router.beforeEach((navType, to) => {
 	
 	if (to.route === undefined) throw ("路由钩子函数中没有找到to.route对象，路由信息:" + JSON.stringify(to));
 
-	if (to.route.path!='/pages/index/index') {
+	/* if (to.route.path!='/pages/index/index') {
 		var token = uni.getStorageSync('user_token');
 		var token_expire_time = uni.getStorageSync('token_expire_time');
 		if (!token||token_expire_time<(new Date()).getTime()) {
@@ -37,7 +37,7 @@ $Router.beforeEach((navType, to) => {
 		    });
 		};
 	};
-
+ */
 	uni[navType]({
 		url: $Utils.objParseUrlAndParam(to.route.path, to.query)
 	})

@@ -31,7 +31,7 @@
 			</view>
 			<view class="rr">
 				合计：<view class="mny">{{totalPrice}}</view>
-				<span class="jsBtn">结算</span>
+				<span class="jsBtn" @click="pay">结算</span>
 			</view>
 		</view>
 		<!--底部tab键-->
@@ -154,7 +154,7 @@
 				};
 			},
 
-
+			
 
 			pay(e) {
 				const self = this;
@@ -178,7 +178,8 @@
 					return;
 				};
 				uni.setStorageSync('payPro', orderList);
-				self.$Utils.pathTo('/pages/oderTrue/oderTrue', 'nav')
+				self.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})
+				
 
 			},
 

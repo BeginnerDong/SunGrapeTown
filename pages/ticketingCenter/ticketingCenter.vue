@@ -10,10 +10,11 @@
 		
 		<view class="tick-nav flexRowBetween">
 			<view class="child">
-				<image src="../../static/images/1about-icon1.png" alt="" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingMyBook/ticketingMyBook'}})"/>
+				<image src="../../static/images/1about-icon1.png" alt="" 
+				@click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingMyBook/ticketingMyBook?id=3'}})"/>
 				<view>我的预订</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingMyBook/ticketingMyBook'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingMyBook/ticketingMyBook?id=2'}})">
 				<image src="../../static/images/1about-icon2.png" alt=""/>
 				<view>我的门票</view>
 			</view>

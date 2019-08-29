@@ -9,7 +9,7 @@ export default {
 		function onBridgeReady(param) {
 			WeixinJSBridge.invoke(
 				'getBrandWCPayRequest', {
-					"appId": "wx5a6b34e74e18e46b", //公众号名称，由商户传入     
+					"appId": "wxc5716e0936ea005b", //公众号名称，由商户传入     
 					'timeStamp': param.timeStamp,
 					'nonceStr': param.nonceStr,
 					'package': param.package,
