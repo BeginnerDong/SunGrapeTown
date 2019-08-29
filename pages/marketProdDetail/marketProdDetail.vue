@@ -18,7 +18,7 @@
 		<view class="xqInfor">
 			<view class="spxq">商品详情</view>
 			<view class="cont">
-				<view class="content ql-editor" v-html="mainData.content">
+				<view class="content ql-editor" v-html="mainData.content" >
 				</view>
 			</view>
 
@@ -40,7 +40,7 @@
 					<view>购物车</view>
 				</view>
 			</view>
-			<view class="payBtn" @click="goBuy">立即支付</view>
+			<view class="payBtn" @click="webSelf.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})">立即支付</view>
 		</view>
 	
 		<!-- <view class="showSel" v-if="is_show" >
@@ -82,7 +82,8 @@
 				indicatorDots: false,
 				autoplay: false,
 				interval: 5000,
-				duration: 1000
+				duration: 1000,
+				
 			}
 		},
 
@@ -107,7 +108,7 @@
 			
 				if (JSON.stringify(self.mainData) == '{}') {
 					
-					self.$Utils.showToast('商品错误', 'none');
+					self.$Utils.showToast('未选中商品', 'none');
 					return;
 				};
 				self.mainData.count = 1;
@@ -116,24 +117,6 @@
 				if (res) {
 					self.$Utils.showToast('加入成功', 'none');
 				};
-			},
-			
-			goBuy() {
-				const self = this;
-				if (JSON.stringify(self.mainData) == '{}') {	
-					api.showToast('商品错误', 'none', 1000);
-					return;
-				};
-				var orderList = [{
-					product: [{
-						id: self.mainData.id,
-						count: 1,
-						product:self.mainData
-					}],
-					type: 1,
-				}];
-				uni.setStorageSync('payPro', orderList);
-				self.$Router.navigateTo({route:{path:'/pages/confirmOrder/confirmOrder'}})
 			},
 			
 			getMainData() {
@@ -158,7 +141,23 @@
 				};
 				self.$apis.productGet(postData, callback);
 			},
-			
+			/* showSel(){
+				const self = this;
+				self.is_show = !self.is_show;
+				
+			},
+			plus(proNum) {
+				const self = this;
+			    self.proNum++;
+			},
+			reduce(proNum){
+				const self = this;
+				if (self.proNum <= 1) {
+					alert("不能少了")
+				}else {
+					self.proNum -= 1;
+				}
+			}, */
 
 			
 		}
@@ -170,10 +169,11 @@
 	@import "../../assets/style/index.css";
 	@import "../../assets/style/car.css";
 	@import "../../assets/style/shopDetail.css";
-
 	.swiper-box {
 		height: 400rpx;
 		margin: 0;
 		border-radius: 0rpx !important;
 	}
+	
+	
 </style>

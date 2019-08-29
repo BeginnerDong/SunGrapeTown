@@ -25,6 +25,12 @@
 		width: 100%;
 		height:auto;
 	}
+	
+	.ql-editor img{
+		max-width: 100%;
+		min-width: 50%;
+		display: block;
+	}
 	/* @import "/assets/style/quill.css"; */
 	/*每个页面公共css */
 /* 	@import "/assets/style/quill.css"; */
