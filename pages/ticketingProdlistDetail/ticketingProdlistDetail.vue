@@ -101,7 +101,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = '商品详情'
 		},
 
 		methods: {

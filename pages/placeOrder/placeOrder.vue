@@ -68,7 +68,10 @@
 			self.countTotalPrice();
 		},
 
-		
+		onShow() {
+			const self = this;
+			document.title = '下单预约'
+		},
 
 		methods: {
 			

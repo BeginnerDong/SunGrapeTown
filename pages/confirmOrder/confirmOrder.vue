@@ -4,7 +4,12 @@
 		<view>
 			<view class="flexRowBetween cfmSetAdrs" @click="webSelf.$Router.navigateTo({route:{path:'/pages/myAddress/myAddress'}})">
 				<view class="yy-title">收货地址</view>
-				<view class="avoidOverflow" style="width:76%; font-size: 28rpx;padding-left:20rpx;color: #666;">{{addressData.city+addressData.detail}}</view>
+				<view class="avoidOverflow" v-if="addressData.city" style="width:76%; font-size: 28rpx;padding-left:20rpx;color: #666;">
+					{{addressData.city+addressData.detail}}
+				</view>
+				<view class="avoidOverflow" v-else style="width:76%; font-size: 28rpx;padding-left:20rpx;color: #666;">
+					请选择收货地址
+				</view>
 				<image style="width: 15rpx;height: 30rpx;" src="../../static/images/arrow.png" alt=""/>
 			</view>
 			
@@ -44,7 +49,8 @@
 			return {
 				webSelf: this,
 				addressData:{},
-				mainData:[]
+				mainData:[],
+				totalPrice:0
 			}
 		},
 
@@ -52,7 +58,9 @@
 			const self = this;
 			uni.setStorageSync('canClick',true);
 			self.mainData = self.$Utils.jsonToArray(uni.getStorageSync('payPro'), 'unshift');
+			self.cartData = self.$Utils.getStorageArray('cartData');
 			console.log('self.data.mainData', self.mainData);
+			console.log('self.data.cartData', self.cartData);
 			self.countTotalPrice();
 		},
 
@@ -63,7 +71,7 @@
 			}else{
 				self.getAddressData()
 			}
-			document.title = '下单预约'
+			document.title = '确认订单'
 		},
 
 		methods: {
@@ -84,10 +92,19 @@
 				const postData = {
 					tokenFuncName: 'getProjectToken',
 					orderList: self.mainData,
+					snap_address:self.addressData
 				};	
 				const callback = (res) => {
 					if (res && res.solely_code == 100000) {
 						self.orderId = res.info.id;
+						for (var i = 0; i < postData.orderList[0].product.length; i++) {
+							for (var j = 0; j < self.cartData.length; j++) {
+								if(postData.orderList[0].product[i].id==self.cartData[j].id){
+									self.$Utils.delStorageArray('cartData',self.cartData[j],'id')
+								}
+							}
+							
+						}
 						self.pay(self.orderId)
 					} else {		
 						uni.setStorageSync('canClick', true);
@@ -96,6 +113,7 @@
 							duration: 2000
 						});
 					};
+					
 				};
 				self.$apis.addOrder(postData, callback);
 			},

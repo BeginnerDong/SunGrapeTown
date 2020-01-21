@@ -84,7 +84,7 @@
 		{
 			"path": "pages/ticketingProdlist/ticketingProdlist",
 			"style": {
-				"navigationBarTitleText": "亲子双人票", //设置页面标题文字
+				"navigationBarTitleText": "商品列表", //设置页面标题文字
 				"onReachBottomDistance": 100,
 				"navigationBarBackgroundColor":"#F6F6F6",
 				"navigationBarTextStyle":"black"
@@ -192,9 +192,9 @@
 			}
 		}
 
-    ]
-// 	"globalStyle": {
-// 		"navigationStyle": "custom"
-// 
-// 	}
+    ],
+ 	"globalStyle" : {
+ 		"navigationBarTextStyle": "black",//导航栏文字蓝色
+ 	    "navigationBarBackgroundColor": "#FFFFFF"
+ 	}
 }

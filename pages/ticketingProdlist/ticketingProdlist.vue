@@ -39,7 +39,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = self.title
 		},
 		
 		onReachBottom() {

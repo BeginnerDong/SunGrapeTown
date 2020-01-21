@@ -98,7 +98,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = '商品详情'
 		},
 
 		methods: {
@@ -113,6 +113,7 @@
 				};
 				self.mainData.count = 1;
 				self.mainData.isSelect = true;
+				
 				var res = self.$Utils.setStorageArray('cartData', self.mainData, 'id', 999);
 				if (res) {
 					self.$Utils.showToast('加入成功', 'none');

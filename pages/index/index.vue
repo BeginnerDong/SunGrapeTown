@@ -82,7 +82,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = '首页'
 		},
 
 		methods: {

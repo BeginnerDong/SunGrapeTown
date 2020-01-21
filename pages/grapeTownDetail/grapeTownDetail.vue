@@ -29,7 +29,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '太阳葡萄小镇'
+			document.title = '详情'
 		},
 
 

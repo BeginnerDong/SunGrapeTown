@@ -43,7 +43,7 @@
 			return {
 				webSelf: this,
 				searchItem:{
-					
+					transport_status:0
 				},
 				current:1,
 				mainData:[]

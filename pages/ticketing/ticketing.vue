@@ -33,9 +33,9 @@
 				<image src="../../static/images/1home-icon5.png" alt=""/>
 				<view>丛林穿越</view>
 			</view>
-			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=葡萄酒DIY'}})">
+			<view class="child" @click="webSelf.$Router.navigateTo({route:{path:'/pages/ticketingProdlist/ticketingProdlist?title=沙滩摩托'}})">
 				<image src="../../static/images/1home-icon6.png" alt=""/>
-				<view>葡萄酒DIY</view>
+				<view>沙滩摩托</view>
 			</view>
 		</view>
 
@@ -90,7 +90,7 @@
 
 		onShow() {
 			const self = this;
-			document.title = '小镇市集'
+			document.title = '门票预订'
 		},
 
 		methods: {

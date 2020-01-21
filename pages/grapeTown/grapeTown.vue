@@ -41,6 +41,11 @@
  			self.$Utils.loadAll(['getMainData'], self);			
  		},
 		
+		onShow() {
+			const self = this;
+			document.title = self.title
+		},
+		
 		onReachBottom() {
 			console.log('onReachBottom')
 			const self = this;
